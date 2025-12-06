@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kakao OAuth2 Demo</title>
+  <style>
+    @font-face {
+    font-family: 'SeoulNotice';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2505-1@1.0/SeoulAlrimTTF-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-display: swap;
+    }
+    body { font-family: 'SeoulNotice'; margin: 50px; text-align: center; }
+    .container { max-width: 400px; margin: 0 auto; }
+    .btn { padding: 10px 20px; background-color: #FEE500; color: #000; text-decoration: none; border-radius: 5px; }
+    .btn_container { margin-top : 30px; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Kakao OAuth2 로그인 데모</h1>
+  <div sec:authorize="! isAuthenticated()">
+      <p>카카오 계정으로 로그인해보세요!!</p>
+      <div class="btn_container">
+        <a href="/login" class="btn">로그인</a>
+      </div>
+  </div>
+  <div sec:authorize="isAuthenticated()">
+    <p>이미 로그인을 하셨네요? </p>
+    회원님의 이름은 <span sec:authentication="name"></span> 입니다.
+    <hr>
+    <div class="btn_container">
+      <a href="/profile" class="btn">프로파일보기</a>
+      <a href="/logout" class="btn logout-btn">로그아웃</a>
+    </div>
+</div>
+</body>
+</html>

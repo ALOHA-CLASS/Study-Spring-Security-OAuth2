@@ -1,0 +1,59 @@
+package com.example.oauth2naver.service;
+
+import com.example.oauth2naver.entity.User;
+import com.example.oauth2naver.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Service;
+
+import java.util.Map;
+
+@Service
+public class CustomOAuth2UserService extends DefaultOAuth2UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Override
+    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        OAuth2User oauth2User = super.loadUser(userRequest);
+
+        String accessToken = userRequest.getAccessToken().getTokenValue();
+        System.out.println("access 토큰 : " + accessToken);
+
+        String registrationId = userRequest.getClientRegistration().getRegistrationId();
+
+        if ("naver".equals(registrationId)) {
+            return processNaverUser(oauth2User);
+        }
+
+        return oauth2User;
+    }
+
+    private OAuth2User processNaverUser(OAuth2User oauth2User) {
+        Map<String, Object> attributes = oauth2User.getAttributes();
+        System.out.println("추출된 attributes : " + attributes);
+        // Naver 사용자 정보 추출
+        Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+
+        String id = response != null ? (String) response.get("id") : "";
+        String name = response != null ? (String) response.get("name") : "";
+        String profileImageUrl = response != null ? (String) response.get("profile_image") : "";
+        String email = response != null ? (String)response.get("email") : "";
+
+        // 사용자 저장 또는 업데이트
+        User user = userRepository.findById(id)
+                .orElse(new User(id, name, email, profileImageUrl ));
+
+        user.setName(name);
+        user.setEmail(email);
+        user.setProfileImageUrl(profileImageUrl);
+
+        userRepository.save(user);
+
+        return new CustomOAuth2User(oauth2User.getAttributes(), user);
+    }
+}

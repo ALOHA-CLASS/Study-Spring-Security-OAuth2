@@ -1,0 +1,65 @@
+
+[ 문제 1 ]
+OAuth 2.0 Grant 타입 중에서 Authorization Code Grant Type에 대해 정리하세요.
+
+A. 
+OAuth 2.0 Grant 타입에서 제공되는 6가지 인증 수단 중 하나로, 가장 많이 사용되느 타입이다.
+아래와 같은 과정을 거쳐 인증이 이루어진다.
+- 1단계: 인증 요청 (Authorization Request)
+- 2단계: 사용자 로그인
+- 3단계: 인증 성공
+- 4단계: 제공 정보 동의 화면
+- 5단계: 인가 코드 발급
+- 6단계: 액세스 토큰 요청
+- 7단계: 액세스 토큰 으로 api 요청
+핵심적으로, 클라리언트는 최초에 인가코드를 요청해서 응답받고
+인가코드를 통해서 액세스 토큰을 요청하는 구조이다. 
+액세스 토큰으로 인증서버에게 검증을 받고 리소스 서버에게 자원을 요청할 수 있다.
+
+
+[ 문제 2 ]
+OAuth 2.0 에서의 Authorization Server 와 Resource Server 의 역할에 대해 정리하세요.
+
+인증서버는 인증서버는 인증과 인가에 대한 역할을 하는 서버이다.
+리소스서버는 클라이언트에게 정보를 제공하는 서버이다.
+
+
+[ 문제 3 ]
+다음은 소셜 로그인을 하기위한 소셜 SecurityfilterChain 객체의 생성 코드입니다. [[  ]] 에 들어갈 메서드명을
+작성하세요.
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/", "/login", "/h2-console/**", "/favicon.ico").permitAll()
+                        .anyRequest().authenticated()
+            )
+            .[[           ]](oauth2 -> oauth2
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/profile", true)
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
+                        )
+            )
+            .logout(logout -> logout
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
+                        // 로그아웃 시 쿠키를 삭제
+                        .deleteCookies("JSESSIONID")
+
+            );
+           
+        return http.build();
+    }
+}
+
+
+
+A. oauth2Login

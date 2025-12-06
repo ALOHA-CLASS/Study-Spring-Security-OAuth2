@@ -1,0 +1,13 @@
+[ URL ]
+
+http://localhost:9000/oauth2/authorize?response_type=code&client_id=oidc-client&redirect_uri=http://localhost:8080/login/oauth2/code/oidc-client&scope=openid%20profile%20address&state=xyz123
+
+
+[ 명령 1 ]
+
+curl -X POST "http://localhost:9000/oauth2/token" -H "Authorization: Basic b2lkYy1jbGllbnQ6c2VjcmV0" -H "Content-Type: application/x-www-form-urlencoded" -d "grant_type=authorization_code&code=코드&redirect_uri=http://localhost:8080/login/oauth2/code/oidc-client"
+
+
+[ 명령 2 ]
+
+curl -X GET "http://localhost:9001/api/private"   -H "Authorization: Bearer 본인접근토큰"

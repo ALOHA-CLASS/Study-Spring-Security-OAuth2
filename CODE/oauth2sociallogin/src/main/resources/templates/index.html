@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OAuth2 소셜 로그인</title>
+  <style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        text-align: center;
+        max-width: 500px;
+        width: 100%;
+        margin: 20px;
+    }
+    h1 {
+        color: #333;
+        margin-bottom: 30px;
+        font-size: 2.5em;
+        font-weight: 300;
+    }
+    .welcome-text {
+        color: #666;
+        margin-bottom: 40px;
+        font-size: 1.2em;
+        line-height: 1.6;
+    }
+    .btn {
+        display: inline-block;
+        padding: 12px 30px;
+        margin: 10px;
+        background: #667eea;
+        color: white;
+        text-decoration: none;
+        border-radius: 25px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+    .btn:hover {
+        background: #5a6fd8;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    }
+    .features {
+        margin-top: 40px;
+        text-align: left;
+    }
+    .feature-item {
+        display: flex;
+        align-items: center;
+        margin: 15px 0;
+        color: #555;
+    }
+    .feature-icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 15px;
+        color: #667eea;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>OAuth2 소셜 로그인</h1>
+  <div class="welcome-text">
+    안전하고 편리한 소셜 로그인으로<br>
+    간편하게 서비스를 이용해보세요!
+  </div>
+
+  <a href="/login" class="btn">로그인하기</a>
+
+  <div class="features">
+    <div class="feature-item">
+      <span class="feature-icon">✓</span>
+      구글, 네이버, 카카오 로그인 지원
+    </div>
+    <div class="feature-item">
+      <span class="feature-icon">✓</span>
+      안전한 OAuth2 인증
+    </div>
+    <div class="feature-item">
+      <span class="feature-icon">✓</span>
+      개인정보 보호
+    </div>
+    <div class="feature-item">
+      <span class="feature-icon">✓</span>
+      빠르고 간편한 회원가입
+    </div>
+  </div>
+</div>
+</body>
+</html>

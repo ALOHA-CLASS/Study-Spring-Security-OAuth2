@@ -1,0 +1,47 @@
+
+[ 문제 1 ]
+OAuth 2.0 Grant 타입 중에서 Authorization Code Grant Type에 대해 정리하세요.
+
+
+
+[ 문제 2 ]
+OAuth 2.0 에서의 Authorization Server 와 Resource Server 의 역할에 대해 정리하세요.
+
+
+[ 문제 3 ]
+다음은 소셜 로그인을 하기위한 소셜 SecurityfilterChain 객체의 생성 코드입니다. [[  ]] 에 들어갈 메서드명을
+작성하세요.
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/", "/login", "/h2-console/**", "/favicon.ico").permitAll()
+                        .anyRequest().authenticated()
+            )
+            .[[           ]](oauth2 -> oauth2
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/profile", true)
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
+                        )
+            )
+            .logout(logout -> logout
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
+                        // 로그아웃 시 쿠키를 삭제
+                        .deleteCookies("JSESSIONID")
+
+            );
+           
+        return http.build();
+    }
+}
+
+
